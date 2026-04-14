@@ -24,7 +24,10 @@ uninstall:
 	@echo "Removing $(TARGET) from $(PREFIX)/bin..."
 	@rm -f $(PREFIX)/bin/$(TARGET)
 
+test: $(TARGET)
+	@bash tests/test_add.sh && bash tests/test_search.sh
+
 clean:
 	rm -f $(TARGET)
 
-.PHONY: all install uninstall clean
+.PHONY: all install uninstall clean test

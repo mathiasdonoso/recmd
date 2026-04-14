@@ -10,6 +10,17 @@ static const char *db_path(void)
 {
     static char path[256];
 
+    const char *override = getenv("RECMD_DB_PATH");
+    if (override) {
+        if (strlen(override) >= sizeof(path)) {
+            fprintf(stderr, "RECMD_DB_PATH too long\n");
+            return NULL;
+        }
+        strncpy(path, override, sizeof(path) - 1);
+        path[sizeof(path) - 1] = '\0';
+        return path;
+    }
+
     const char *home = getenv("HOME");
     if (!home) {
         fprintf(stderr, "$HOME not set\n");
