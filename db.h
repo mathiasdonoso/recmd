@@ -17,7 +17,7 @@ typedef struct {
 
 void db_result_free(db_result_t *result);
 
-sqlite3     *db_init();
+sqlite3     *db_init(void);
 void         db_close(sqlite3 *db);
 
 int          db_record_command(sqlite3 *db, const char *cmd, const char *dir, int exit_code);

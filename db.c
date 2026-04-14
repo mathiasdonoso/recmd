@@ -1,29 +1,43 @@
 #include "sqlite3.h"
+#include <errno.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include "db.h"
 
-
 static const char *db_path(void)
 {
+    static char path[256];
+
     const char *home = getenv("HOME");
     if (!home) {
         fprintf(stderr, "$HOME not set\n");
         return NULL;
     }
 
-    char dir[4096];
-    snprintf(dir, sizeof(dir), "%s/.config/recmd", home);
-    mkdir(dir, 0755);
+    int n = snprintf(path, sizeof(path), "%s/.config/recmd", home);
+    if (n < 0 || n >= (int)sizeof(path)) {
+        fprintf(stderr, "path too long\n");
+        return NULL;
+    }
 
-    static char path[4096];
-    snprintf(path, sizeof(path), "%s/.config/recmd/history.db", home);
+    int dir_result = mkdir(path, 0755);
+    if(dir_result != 0 && errno != EEXIST) {
+        fprintf(stderr, "cannot create the db directory");
+        return NULL;
+    }
+
+    n = snprintf(path, sizeof(path), "%s/.config/recmd/history.db", home);
+    if (n < 0 || n >= (int)sizeof(path)) {
+        fprintf(stderr, "path too long\n");
+        return NULL;
+    }
+
     return path;
 }
 
-sqlite3 *db_init()
+sqlite3 *db_init(void)
 {
     sqlite3 *db;
     int rc = sqlite3_open(db_path(), &db);
