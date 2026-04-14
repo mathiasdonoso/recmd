@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#include "recmd.h"
 #include "sqlite3.h"
 #include <getopt.h>
 #include "db.h"

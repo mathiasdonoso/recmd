@@ -60,7 +60,5 @@ void add_command(int argc, char **argv) {
         fprintf(stderr, "error recording command: %s\n", command);
         return;
     }
-
-    printf("command %s saved\n", command);
 }
 
