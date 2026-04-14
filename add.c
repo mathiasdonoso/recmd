@@ -9,8 +9,12 @@
 
 void show_add_usage(bool fail)
 {
-    /* TODO */
-    fprintf(stdout, "Usage: recmd add [OPTIONS]\n\n");
+    fprintf(stdout,
+            "Usage: recmd add [OPTIONS]\n\n"
+            "OPTIONS\n"
+            " -c, --command    Command to store\n"
+            " -d, --directory  Working directory where the command was run\n"
+            " -e, --exitcode   Exit code of the command\n");
     exit(fail ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 

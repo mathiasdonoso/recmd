@@ -9,8 +9,15 @@
 
 void show_usage(bool fail)
 {
-    /* TODO */
-    fprintf(stdout, "Usage: recmd [COMMAND] [OPTIONS]\n\n");
+    fprintf(stdout,
+            "Usage: recmd [COMMAND] [OPTIONS]\n\n"
+            "COMMAND\n"
+            "  add          Store a command to the database\n"
+            "  search       Search stored commands\n"
+            "\n"
+            "OPTIONS\n"
+            " -V, --version Show RECMD version\n"
+            " -h, --help    Show this help\n");
     exit(fail ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
@@ -30,14 +37,9 @@ int main(int argc, char **argv)
         { NULL, 0, NULL, 0 }
     };
 
-    /* int c, flags = 0; */
     int c = 0;
     while ((c = getopt_long(argc, argv, global_shortopts, global_longopts, NULL)) != -1) {
         switch (c) {
-            case 'v':
-                /* TODO */
-                /* flags |= RECMD_FLAG_VERBOSE; */
-                break;
             case 'V':
                 printf("%s\n", RECMD_RELVER);
                 exit(EXIT_SUCCESS);

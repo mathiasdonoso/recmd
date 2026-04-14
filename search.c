@@ -10,8 +10,10 @@
 
 void show_search_usage(bool fail)
 {
-    /* TODO */
-    fprintf(stdout, "Usage: recmd search [OPTIONS]\n\n");
+    fprintf(stdout,
+            "Usage: recmd search [OPTIONS]\n\n"
+            "OPTIONS\n"
+            " -c, --command Search query to filter commands\n");
     exit(fail ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
