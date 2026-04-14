@@ -87,6 +87,7 @@ void db_close(sqlite3 *db)
 
 int db_record_command(sqlite3 *db, const char *cmd, const char *dir, int exit_code)
 {
+    /* TODO: Skip registering if the command already exists */
     const char *q = "INSERT INTO history(command, directory, exit_code) VALUES (?, ?, ?);";
 
     sqlite3_stmt *stmt;
@@ -123,6 +124,10 @@ void db_result_free(db_result_t *result)
     free(result);
 }
 
+/* TODO: Evaluate: */
+// TODO: Prioritize exit code 0 handling
+// TODO: Prioritize commands from the same directory
+// TODO: Add new column with AI-generated tags and descriptions for commands to enable filtering
 db_result_t *db_fetch_commands(sqlite3 *db, const char *cmd)
 {
     const char *q =
@@ -137,7 +142,7 @@ db_result_t *db_fetch_commands(sqlite3 *db, const char *cmd)
     }
 
     /* build the LIKE pattern with bound parameter — avoids mprintf */
-    char pattern[512];
+    char pattern[256];
     snprintf(pattern, sizeof(pattern), "%%%s%%", cmd);
     sqlite3_bind_text(stmt, 1, pattern, -1, SQLITE_STATIC);
 
