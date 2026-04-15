@@ -48,15 +48,15 @@ if command -v recmd &>/dev/null; then
     fi
 
     if command -v fzf &>/dev/null; then
-        __recmd_fzf_search() {
+        __recmd_fzf_ls() {
             local selected
-            selected=$(recmd search -c "${READLINE_LINE}" | fzf --height 40% --reverse)
+            selected=$(recmd ls | fzf --height 40% --reverse)
             if [ -n "$selected" ]; then
                 READLINE_LINE="$selected"
                 READLINE_POINT=${#selected}
             fi
         }
-        bind -x '"\C-r": __recmd_fzf_search'
+        bind -x '"\C-r": __recmd_fzf_ls'
     fi
 fi
 ```

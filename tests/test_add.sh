@@ -30,7 +30,7 @@ teardown
 setup
 "$RECMD" add -c "ls -la" -d /tmp
 "$RECMD" add -c "ls -la" -d /tmp
-count=$("$RECMD" search | grep -cF "ls -la")
+count=$("$RECMD" ls | grep -cF "ls -la")
 assert_eq "$count" "1" "duplicate command appears only once in search results"
 teardown
 

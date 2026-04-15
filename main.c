@@ -5,7 +5,7 @@
 #include "recmd.h"
 #include <getopt.h>
 #include "add.h"
-#include "search.h"
+#include "ls.h"
 
 void show_usage(bool fail)
 {
@@ -13,7 +13,7 @@ void show_usage(bool fail)
             "Usage: recmd [COMMAND] [OPTIONS]\n\n"
             "COMMAND\n"
             "  add          Store a command to the database\n"
-            "  search       Search stored commands\n"
+            "  ls           List stored commands\n"
             "\n"
             "OPTIONS\n"
             " -V, --version Show RECMD version\n"
@@ -57,8 +57,8 @@ int main(int argc, char **argv)
 
     if (strcmp(subcommand, "add") == 0) {
         add_command(argc - optind, argv + optind);
-    } else if (strcmp(subcommand, "search") == 0) {
-        search_command(argc - optind, argv + optind);
+    } else if (strcmp(subcommand, "ls") == 0) {
+        ls_command(argc - optind, argv + optind);
     } else {
         show_usage(true);
     }

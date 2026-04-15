@@ -25,7 +25,7 @@ uninstall:
 	@rm -f $(PREFIX)/bin/$(TARGET)
 
 test: $(TARGET)
-	@bash tests/test_add.sh && bash tests/test_search.sh
+	@bash tests/test_add.sh && bash tests/test_ls.sh
 
 clean:
 	rm -f $(TARGET)
