@@ -57,7 +57,14 @@ void add_command(int argc, char **argv) {
         return;
     }
 
-    int rc = db_record_command(db, command, directory, exitcode);
+    int rc;
+    rc = db_count_command(db, command);
+    if (rc != 0) {
+        db_close(db);
+        return;
+    }
+
+    rc = db_record_command(db, command, directory, exitcode);
     db_close(db);
 
     if (rc != 0) {

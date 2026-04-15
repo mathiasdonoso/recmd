@@ -26,4 +26,12 @@ setup
 assert_exit "$code" 1 "add without -d exits 1"
 teardown
 
+# duplicate command is stored only once
+setup
+"$RECMD" add -c "ls -la" -d /tmp
+"$RECMD" add -c "ls -la" -d /tmp
+count=$("$RECMD" search | grep -cF "ls -la")
+assert_eq "$count" "1" "duplicate command appears only once in search results"
+teardown
+
 summary

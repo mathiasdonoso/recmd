@@ -85,9 +85,31 @@ void db_close(sqlite3 *db)
         fprintf(stderr, "database did not close cleanly (error: %d)\n", rc);
 }
 
+int db_count_command(sqlite3 *db, const char *cmd)
+{
+    sqlite3_stmt *stmt;
+    int rc;
+
+    const char *q = "SELECT COUNT(*) FROM history WHERE COMMAND = (?);";
+    rc = sqlite3_prepare_v2(db, q, -1, &stmt, NULL);
+    if (rc != SQLITE_OK) {
+        fprintf(stderr, "prepare failed: %s\n", sqlite3_errmsg(db));
+        return -1;
+    }
+
+    sqlite3_bind_text(stmt, 1, cmd,  -1, SQLITE_STATIC);
+
+    int count = 0;
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        count = sqlite3_column_int(stmt, 0);
+    }
+
+    sqlite3_finalize(stmt);
+    return count;
+}
+
 int db_record_command(sqlite3 *db, const char *cmd, const char *dir, int exit_code)
 {
-    /* TODO: Skip registering if the command already exists */
     const char *q = "INSERT INTO history(command, directory, exit_code) VALUES (?, ?, ?);";
 
     sqlite3_stmt *stmt;
