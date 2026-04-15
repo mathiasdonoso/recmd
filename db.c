@@ -125,14 +125,14 @@ void db_result_free(db_result_t *result)
 }
 
 /* TODO: Evaluate: */
-// TODO: Prioritize exit code 0 handling
 // TODO: Prioritize commands from the same directory
 // TODO: Add new column with AI-generated tags and descriptions for commands to enable filtering
-db_result_t *db_fetch_commands(sqlite3 *db, const char *cmd)
+db_result_t *db_fetch_all(sqlite3 *db)
 {
-    const char *q =
-        "SELECT DISTINCT command"
-        " FROM history WHERE command LIKE ?";
+    char *q =
+        "SELECT DISTINCT command "
+        "FROM history "
+        "ORDER BY exit_code ASC;";
 
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db, q, -1, &stmt, NULL);
@@ -140,11 +140,6 @@ db_result_t *db_fetch_commands(sqlite3 *db, const char *cmd)
         fprintf(stderr, "prepare failed: %s\n", sqlite3_errmsg(db));
         return NULL;
     }
-
-    /* build the LIKE pattern with bound parameter — avoids mprintf */
-    char pattern[256];
-    snprintf(pattern, sizeof(pattern), "%%%s%%", cmd);
-    sqlite3_bind_text(stmt, 1, pattern, -1, SQLITE_STATIC);
 
     db_result_t *result = calloc(1, sizeof(db_result_t));
     if (!result) {

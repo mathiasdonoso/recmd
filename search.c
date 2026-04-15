@@ -11,35 +11,24 @@
 void show_search_usage(bool fail)
 {
     fprintf(stdout,
-            "Usage: recmd search [OPTIONS]\n\n"
-            "OPTIONS\n"
-            " -c, --command Search query to filter commands\n");
+            "Usage: recmd search\n\n");
     exit(fail ? EXIT_FAILURE : EXIT_SUCCESS);
 }
 
 void search_command(int argc, char **argv) {
     opterr = 0;
-    const char *search_shortopts = "c:";
+    const char *search_shortopts = "";
     const struct option search_longopts[] = {
-        { "command", required_argument, NULL, 'c'},
         { NULL, 0, NULL, 0}
     };
-
-    char *command = NULL;
 
     int c = 0;
     while ((c = getopt_long(argc, argv, search_shortopts, search_longopts, NULL)) != -1) {
         switch (c) {
-            case 'c':
-                command = optarg;
-                break;
             default:
                 show_search_usage(true);
         }
     }
-
-    if (!command)
-        show_search_usage(true);
 
     sqlite3 *db = db_init();
     if (!db) {
@@ -47,7 +36,7 @@ void search_command(int argc, char **argv) {
         return;
     }
 
-    db_result_t *result = db_fetch_commands(db, command);
+    db_result_t *result = db_fetch_all(db);
     db_close(db);
 
     print_commands(result);

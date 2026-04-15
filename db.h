@@ -21,6 +21,6 @@ sqlite3     *db_init(void);
 void         db_close(sqlite3 *db);
 
 int          db_record_command(sqlite3 *db, const char *cmd, const char *dir, int exit_code);
-db_result_t *db_fetch_commands(sqlite3 *db, const char *cmd);
+db_result_t *db_fetch_all(sqlite3 *db);
 
 #endif
